@@ -30,6 +30,17 @@ export default class classComponent extends Component {
     this.setState({ todos: todoRemaining });
   };
 
+  editTodo = (index) => {
+    const uneditedTodo = this.state.todos;
+    const editedTodo = prompt();
+    uneditedTodo[index] = editedTodo;
+    this.setState({ todos: uneditedTodo });
+  };
+
+  editDate = (index) => {
+    const date = new Date();
+  };
+
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
@@ -37,7 +48,14 @@ export default class classComponent extends Component {
   render() {
     var displayItems = this.state.todos.map((todo, i) => {
       return (
-        <Todos index={i} key={i} todo={todo} deleteTodo={this.deleteTodo} />
+        <Todos
+          index={i}
+          key={i}
+          todo={todo}
+          deleteTodo={this.deleteTodo}
+          editTodo={this.editTodo}
+          editDate={this.editDate}
+        />
       );
     });
 
