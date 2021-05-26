@@ -18,24 +18,17 @@ export default class classComponent extends Component {
   }
 
   addTodo(event) {
-    console.log(this.state.value);
-    var changedTodos = this.state.todos;
+    const changedTodos = this.state.todos;
     changedTodos.push(this.state.value);
-    console.log(changedTodos);
     this.setState({ todos: changedTodos });
     event.preventDefault();
   }
 
-  deleteTodo(event) {
-    var deletedTodo = this.state.todos;
-    // axiom.delete();
-    for (var i = 0; i < deletedTodo.length; i++) {
-      deletedTodo.splice(i, 1);
-    }
-    console.log(deletedTodo);
-    this.setState({ todos: deletedTodo });
-    event.preventDefault();
-  }
+  deleteTodo = (index) => {
+    const deletedTodo = this.state.todos;
+    const todoRemaining = deletedTodo.filter((element, i) => i != index);
+    this.setState({ todos: todoRemaining });
+  };
 
   handleChange(event) {
     this.setState({ value: event.target.value });
@@ -43,7 +36,9 @@ export default class classComponent extends Component {
 
   render() {
     var displayItems = this.state.todos.map((todo, i) => {
-      return <Todos key={i} todo={todo} />;
+      return (
+        <Todos index={i} key={i} todo={todo} deleteTodo={this.deleteTodo} />
+      );
     });
 
     return (
@@ -64,22 +59,6 @@ export default class classComponent extends Component {
             Add
           </button>
         </form>
-        {/* <form
-          action=""
-          className="fas fa-trash-alt icon icon-trash tooltip"
-          onSubmit={this.DeleteTodo}
-        >
-          <input
-            type="text"
-            name="addItem"
-            id="addItem"
-            placeholder="Add new..."
-            onChange={this.handleChange}
-          />
-          <button type="submit" id="add">
-            Add
-          </button>
-        </form> */}
         <div className="main-container__checklist-items">
           <form>
             <div className="checklist-row">

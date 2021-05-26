@@ -8,16 +8,25 @@ export default class Todos extends Component {
   render() {
     return (
       <div>
-        <label className="styled-checkbox" htmlFor={this.key}>
+        <label className="styled-checkbox" htmlFor={this.props.index}>
           {this.props.todo}
-          <input type="checkbox" id={this.key} name={this.key} />
+          <input
+            type="checkbox"
+            id={this.props.index}
+            name={this.props.index}
+          />
           <span className="checkmark"></span>
         </label>
         <span className="icons-group">
           <i className="fas fa-pen icon icon-pen tooltip">
             <span className="tooltiptext">Edit todo</span>
           </i>
-          <i className="fas fa-trash-alt icon icon-trash tooltip">
+          <i
+            className="fas fa-trash-alt icon icon-trash tooltip"
+            onClick={() => {
+            this.props.deleteTodo(this.props.index);
+            }}
+          >
             <span className="tooltiptext">Delete todo</span>
           </i>
           <div className="date">
