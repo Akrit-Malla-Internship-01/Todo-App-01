@@ -19,9 +19,6 @@ function App() {
         {/* <div>
           <Checklist />
         </div> */}
-        <div>
-          <Option />
-        </div>
       </div>
     </div>
   );

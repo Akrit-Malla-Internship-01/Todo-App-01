@@ -1,15 +1,16 @@
 import { Component } from "react";
-import Todos from "./Todos.jsx";
+import Todos from "./Todos";
+import Options from "../components/Options";
 
-export default class classComponent extends Component {
+export default class ClassComponent extends Component {
   constructor() {
     super();
     this.state = {
       value: "",
       todos: [
-        "Buy groceries for next week",
-        "Renew car insurance",
-        "Sign up for online course edit test",
+        { task: "Buy groceries for next week", isComplete: false },
+        { task: "Renew car insurance", isComplete: false },
+        { task: "Sign up for online course edit test", isComplete: false },
       ],
     };
 
@@ -17,9 +18,13 @@ export default class classComponent extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
   addTodo(event) {
     const changedTodos = this.state.todos;
-    changedTodos.push(this.state.value);
+    changedTodos.push({ task: this.state.value, isComplete: false });
     this.setState({ todos: changedTodos });
     event.preventDefault();
   }
@@ -33,7 +38,7 @@ export default class classComponent extends Component {
   editTodo = (index) => {
     const uneditedTodo = this.state.todos;
     const editedTodo = prompt();
-    uneditedTodo[index] = editedTodo;
+    uneditedTodo[index].task = editedTodo;
     this.setState({ todos: uneditedTodo });
   };
 
@@ -41,21 +46,28 @@ export default class classComponent extends Component {
     const date = new Date();
   };
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
+  filterData = (option) => {
+    const tempTodos = this.state.todos;
+    const filteredTodos = this.state.todos;
+    filteredTodos.filter((checkedTodo) => {
+      return checkedTodo.isComplete == true;
+    });
+    console.log(filteredTodos);
+  };
 
   render() {
-    var displayItems = this.state.todos.map((todo, i) => {
+    const displayItems = this.state.todos.map((todo, i) => {
       return (
-        <Todos
-          index={i}
-          key={i}
-          todo={todo}
-          deleteTodo={this.deleteTodo}
-          editTodo={this.editTodo}
-          editDate={this.editDate}
-        />
+        <>
+          <Todos
+            index={i}
+            key={i}
+            todo={todo}
+            deleteTodo={this.deleteTodo}
+            editTodo={this.editTodo}
+            editDate={this.editDate}
+          />
+        </>
       );
     });
 
@@ -84,6 +96,7 @@ export default class classComponent extends Component {
             </div>
           </form>
         </div>
+        <Options filterData={this.filterData} />
       </div>
     );
   }

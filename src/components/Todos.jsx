@@ -9,7 +9,7 @@ export default class Todos extends Component {
     return (
       <div>
         <label className="styled-checkbox" htmlFor={this.props.index}>
-          {this.props.todo}
+          {this.props.todo.task}
           <input
             type="checkbox"
             id={this.props.index}

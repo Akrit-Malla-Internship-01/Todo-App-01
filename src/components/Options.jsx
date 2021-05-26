@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-export default class classComponent extends Component {
+export default class ClassComponent extends Component {
   constructor() {
     super();
   }
@@ -11,7 +11,14 @@ export default class classComponent extends Component {
         <div className="main-container__items-filter-sort">
           <form action="" className="filter">
             <label htmlFor="filter">Filter</label>
-            <select id="filter" name="filter" className="select">
+            <select
+              id="filter"
+              name="filter"
+              className="select"
+              onChange={(option) => {
+                this.props.filterData(option.value == "completed");
+              }}
+            >
               <option value="all">All</option>
               <option value="completed">Completed</option>
               <option value="active">Active</option>
