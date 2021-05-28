@@ -46,7 +46,7 @@ $green: #338d33;
         font-size: 40px;
       }
       h2 {
-        text-decoration: underline;
+        text-decoration: none;
       }
     }
   }
@@ -266,4 +266,8 @@ $green: #338d33;
   &:hover .tooltiptext {
     visibility: visible;
   }
+}
+
+._1EEDX {
+  padding-left: 100px;
 }
