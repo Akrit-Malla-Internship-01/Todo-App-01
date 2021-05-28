@@ -7,24 +7,38 @@ export default class Options extends Component {
   }
 
   filterData = (option) => {
-    let filteredTodos;
+    let editedTodos = this.props.todos;
 
     switch (option) {
       case "all":
-        filteredTodos = this.props.todos;
-        this.props.handleFilter(filteredTodos);
+        for (let i = 0; i < editedTodos.length; i++) {
+          editedTodos[i].display = true;
+        }
+        console.log(editedTodos);
+        this.props.handleFilter(editedTodos);
         break;
       case "active":
-        filteredTodos = this.props.todos.filter((each) => {
-          return !each.isComplete;
-        });
-        this.props.handleFilter(filteredTodos);
+        for (let i = 0; i < editedTodos.length; i++) {
+          if (editedTodos[i].isComplete === true) {
+            editedTodos[i].display = false;
+          } else {
+            editedTodos[i].display = true;
+          }
+        }
+        console.log(editedTodos);
+        this.props.handleFilter(editedTodos);
         break;
       case "completed":
-        filteredTodos = this.props.todos.filter((each) => {
-          return each.isComplete;
-        });
-        this.props.handleFilter(filteredTodos);
+        //for all todos make display true if iscomplete is true else false
+        for (let i = 0; i < editedTodos.length; i++) {
+          if (editedTodos[i].isComplete === true) {
+            editedTodos[i].display = true;
+          } else {
+            editedTodos[i].display = false;
+          }
+        }
+        console.log(editedTodos);
+        this.props.handleFilter(editedTodos);
         break;
       default:
         alert("In progress... not figured it out yet.");

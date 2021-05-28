@@ -1,34 +1,28 @@
 import { Component } from "react";
+import { EditText, EditTextarea } from "react-edit-text";
 
 export default class Todos extends Component {
+  handleChange = (event) => {
+    this.props.checkHandler(!this.props.todo.isComplete, this.props.index);
+  };
+
   render() {
     return (
-      <div>
+      <div key={this.props.todo.index}>
         <label className="styled-checkbox" htmlFor={this.props.index}>
-          {this.props.todo.task}
           <input
-            key={this.props.index}
             type="checkbox"
             id={this.props.index}
             name={this.props.index}
             checked={this.props.todo.isComplete}
-            onChange={(event, i) => {
-              this.props.checkHandler(
-                !this.props.todo.isComplete,
-                this.props.index
-              );
-            }}
+            onChange={this.handleChange}
           />
           <span className="checkmark"></span>
         </label>
+        <EditText defaultValue={this.props.todo.task} />
         <span className="icons-group">
-          <i
-            className="fas fa-pen icon icon-pen tooltip"
-            onClick={() => {
-              this.props.editTodo(this.props.index);
-            }}
-          >
-            <span className="tooltiptext">Edit todo</span>
+          <i className="fas fa-pen icon icon-pen tooltip" onClick={() => {}}>
+            <span className="tooltiptext">Click the text</span>
           </i>
           <i
             className="fas fa-trash-alt icon icon-trash tooltip"
@@ -39,13 +33,8 @@ export default class Todos extends Component {
             <span className="tooltiptext">Delete todo</span>
           </i>
           <div className="date">
-            <i
-              className="fas fa-info-circle tooltip"
-              onMouseOver={() => {
-                // return this.props.todos.date;
-              }}
-            >
-              <span className="tooltiptext">28-05-2021</span>
+            <i className="fas fa-info-circle tooltip" onMouseOver={() => {}}>
+              <span className="tooltiptext"></span>
             </i>
           </div>
         </span>
