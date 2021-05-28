@@ -39,8 +39,13 @@ export default class Todos extends Component {
             <span className="tooltiptext">Delete todo</span>
           </i>
           <div className="date">
-            <i className="fas fa-info-circle tooltip">
-              <span className="tooltiptext"></span>
+            <i
+              className="fas fa-info-circle tooltip"
+              onMouseOver={() => {
+                // return this.props.todos.date;
+              }}
+            >
+              <span className="tooltiptext">28-05-2021</span>
             </i>
           </div>
         </span>
