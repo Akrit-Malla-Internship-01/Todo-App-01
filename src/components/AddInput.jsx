@@ -2,61 +2,78 @@ import { Component } from "react";
 import Todos from "./Todos";
 import Options from "../components/Options";
 
-export default class ClassComponent extends Component {
+export default class AddInput extends Component {
   constructor() {
     super();
     this.state = {
       value: "",
       todos: [
-        { task: "Buy groceries for next week", isComplete: false },
-        { task: "Renew car insurance", isComplete: false },
-        { task: "Sign up for online course edit test", isComplete: false },
+        {
+          task: "Buy groceries for next week",
+          isComplete: false,
+          date: new Date("2021-05-21"),
+        },
+        {
+          task: "Renew car insurance",
+          isComplete: false,
+          date: new Date("2021-05-22"),
+        },
+        {
+          task: "Sign up for online course edit test",
+          isComplete: false,
+          date: new Date("2021-05-23"),
+        },
       ],
+      filteredTodos: [],
     };
-
-    this.addTodo = this.addTodo.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event) {
+  componentDidMount() {
+    this.setState({ filteredTodos: this.state.todos });
+  }
+
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
-  }
+  };
 
-  addTodo(event) {
-    const changedTodos = this.state.todos;
-    changedTodos.push({ task: this.state.value, isComplete: false });
+  addTodo = (event) => {
+    const changedTodos = this.state.filteredTodos;
+    changedTodos.push({
+      task: this.state.value,
+      isComplete: false,
+      date: new Date(),
+    });
     this.setState({ todos: changedTodos });
     event.preventDefault();
-  }
+  };
 
   deleteTodo = (index) => {
-    const deletedTodo = this.state.todos;
-    const todoRemaining = deletedTodo.filter((element, i) => i != index);
-    this.setState({ todos: todoRemaining });
+    const deletedTodo = this.state.filteredTodos;
+    let todoRemaining = deletedTodo.filter((element, i) => i != index);
+    console.log(todoRemaining);
+    this.setState({ filteredTodos: todoRemaining });
   };
 
   editTodo = (index) => {
-    const uneditedTodo = this.state.todos;
+    const uneditedTodo = this.state.filteredTodos;
     const editedTodo = prompt();
     uneditedTodo[index].task = editedTodo;
     this.setState({ todos: uneditedTodo });
   };
 
-  editDate = (index) => {
-    const date = new Date();
+  handleFilter = (filtered) => {
+    this.setState({ filteredTodos: filtered }, () =>
+      console.log(this.state.filteredTodos)
+    );
   };
 
-  filterData = (option) => {
-    const tempTodos = this.state.todos;
-    const filteredTodos = this.state.todos;
-    filteredTodos.filter((checkedTodo) => {
-      return checkedTodo.isComplete == true;
-    });
-    console.log(filteredTodos);
+  checkHandler = (checkValue, index) => {
+    this.state.todos[index].isComplete = checkValue;
+    this.setState({ todos: this.state.todos });
   };
 
   render() {
-    const displayItems = this.state.todos.map((todo, i) => {
+    let displayItems = this.state.filteredTodos.map((todo, i) => {
       return (
         <>
           <Todos
@@ -66,6 +83,7 @@ export default class ClassComponent extends Component {
             deleteTodo={this.deleteTodo}
             editTodo={this.editTodo}
             editDate={this.editDate}
+            checkHandler={this.checkHandler}
           />
         </>
       );
@@ -96,7 +114,11 @@ export default class ClassComponent extends Component {
             </div>
           </form>
         </div>
-        <Options filterData={this.filterData} />
+        <Options
+          filterData={this.filterData}
+          handleFilter={this.handleFilter}
+          todos={this.state.todos}
+        />
       </div>
     );
   }

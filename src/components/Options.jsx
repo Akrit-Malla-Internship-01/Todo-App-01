@@ -1,9 +1,45 @@
 import { Component } from "react";
 
-export default class ClassComponent extends Component {
-  constructor() {
+export default class Options extends Component {
+  constructor(props) {
     super();
+    this.state = { optionValue: "" };
   }
+
+  filterData = (option) => {
+    let filteredTodos;
+
+    switch (option) {
+      case "all":
+        filteredTodos = this.props.todos;
+        this.props.handleFilter(filteredTodos);
+        break;
+      case "active":
+        filteredTodos = this.props.todos.filter((each) => {
+          return !each.isComplete;
+        });
+        this.props.handleFilter(filteredTodos);
+        break;
+      case "completed":
+        filteredTodos = this.props.todos.filter((each) => {
+          return each.isComplete;
+        });
+        this.props.handleFilter(filteredTodos);
+        break;
+      default:
+        alert("In progress... not figured it out yet.");
+    }
+  };
+
+  handleChange = (event) => {
+    this.setState({ optionValue: event.target.value }, () =>
+      this.filterData(this.state.optionValue)
+    );
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+  };
 
   render() {
     return (
@@ -15,9 +51,8 @@ export default class ClassComponent extends Component {
               id="filter"
               name="filter"
               className="select"
-              onChange={(option) => {
-                this.props.filterData(option.value == "completed");
-              }}
+              value={this.state.optionValue}
+              onChange={this.handleChange}
             >
               <option value="all">All</option>
               <option value="completed">Completed</option>

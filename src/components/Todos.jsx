@@ -1,19 +1,23 @@
 import { Component } from "react";
 
 export default class Todos extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <div>
         <label className="styled-checkbox" htmlFor={this.props.index}>
           {this.props.todo.task}
           <input
+            key={this.props.index}
             type="checkbox"
             id={this.props.index}
             name={this.props.index}
+            checked={this.props.todo.isComplete}
+            onChange={(event, i) => {
+              this.props.checkHandler(
+                !this.props.todo.isComplete,
+                this.props.index
+              );
+            }}
           />
           <span className="checkmark"></span>
         </label>
@@ -35,13 +39,8 @@ export default class Todos extends Component {
             <span className="tooltiptext">Delete todo</span>
           </i>
           <div className="date">
-            <i
-              className="fas fa-info-circle tooltip"
-              onChange={() => {
-                this.props.editDate();
-              }}
-            >
-              <span className="tooltiptext">2021/05/25</span>
+            <i className="fas fa-info-circle tooltip">
+              <span className="tooltiptext"></span>
             </i>
           </div>
         </span>

@@ -1,10 +1,6 @@
 import { Component } from "react";
 
 export default class classComponent extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <div>
