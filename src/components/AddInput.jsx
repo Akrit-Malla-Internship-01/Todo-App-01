@@ -8,27 +8,29 @@ export default class AddInput extends Component {
     this.state = {
       counter: 3,
       value: "",
+      filterOption: "all",
+      sortOption: "addedDate",
       todos: [
         {
           index: 0,
           task: "Buy groceries for next week",
           isComplete: false,
-          date: new Date("2021-05-21"),
-          display: true,
+          add_date: new Date("2021-05-21"),
+          due_date: new Date("2021-05-31"),
         },
         {
           index: 1,
           task: "Renew car insurance",
           isComplete: false,
-          date: new Date("2021-05-22"),
-          display: true,
+          add_date: new Date("2021-05-12"),
+          due_date: new Date("2021-05-22"),
         },
         {
           index: 2,
           task: "Sign up for online course edit test",
           isComplete: false,
-          date: new Date("2021-05-23"),
-          display: true,
+          add_date: new Date("2021-05-06"),
+          due_date: new Date("2021-05-16"),
         },
       ],
     };
@@ -38,13 +40,19 @@ export default class AddInput extends Component {
     this.setState({ value: event.target.value });
   };
 
+  getDueDate = () => {
+    let result = new Date();
+    result.setDate(result.getDate() + 10);
+    return result;
+  };
   addTodo = (event) => {
     const changedTodos = this.state.todos;
     changedTodos.push({
       index: this.state.counter,
       task: this.state.value,
       isComplete: false,
-      date: new Date(),
+      add_date: new Date(),
+      due_date: this.getDueDate(),
       display: true,
     });
     this.setState({ counter: this.state.counter + 1 });
@@ -60,39 +68,64 @@ export default class AddInput extends Component {
     this.setState({ todos: todoRemaining });
   };
 
-  editTodo = (value, index) => {
+  editTodo = (todoValue, index) => {
     const uneditedTodo = this.state.todos;
-
-    if (value.length !== 0) {
-      for (let i = 0; i < uneditedTodo.length; i++) {
-        if (uneditedTodo[i].index == index) {
-          uneditedTodo[i].task = value;
+    if (todoValue.length !== 0) {
+      uneditedTodo.forEach((element) => {
+        if (element.index == index) {
+          element.task = todoValue;
         }
-      }
-      this.setState({ todos: uneditedTodo }, () => {
-        console.log(uneditedTodo);
       });
+      this.setState({ todos: uneditedTodo });
     }
   };
 
-  handleFilter = (editedTodos) => {
-    this.setState({ todos: editedTodos });
+  handleFilterOption = (option) => {
+    this.setState({ filterOption: option });
   };
 
   checkHandler = (checkValue, index) => {
     let temp = this.state.todos;
-    temp[index].isComplete = checkValue;
-    console.log(temp);
+    temp.forEach((element) => {
+      if (element.index == index) {
+        element.isComplete = checkValue;
+      }
+    });
     this.setState({ todos: temp });
   };
 
-  displayDate = (date) => {
-    // this.state.todos.date;
+  handleSortOption = (option) => {
+    this.setState({ sortOption: option });
   };
 
   render() {
-    let displayItems = this.state.todos.map((todo) => {
-      if (todo.display) {
+    let sortedTodos = this.state.todos;
+    sortedTodos.sort((a, b) => {
+      switch (this.state.sortOption) {
+        case "addedDate":
+          return b.due_date - a.due_date;
+        case "dueDate":
+          return a.due_date - b.due_date;
+      }
+    });
+    let filteredTodos = sortedTodos
+      .filter((todo) => {
+        switch (this.state.filterOption) {
+          case "all":
+            return todo;
+          case "completed":
+            if (todo.isComplete) {
+              return todo;
+            }
+            break;
+          case "active":
+            if (!todo.isComplete) {
+              return todo;
+            }
+            break;
+        }
+      })
+      .map((todo) => {
         return (
           <Todos
             key={todo.index}
@@ -105,9 +138,7 @@ export default class AddInput extends Component {
             checkHandler={this.checkHandler}
           />
         );
-      }
-      return "";
-    });
+      });
 
     return (
       <div>
@@ -130,13 +161,14 @@ export default class AddInput extends Component {
         <div className="main-container__checklist-items">
           <form>
             <div className="checklist-row">
-              <div className="form-group">{displayItems}</div>
+              <div className="form-group">{filteredTodos}</div>
             </div>
           </form>
         </div>
         <Options
           filterData={this.filterData}
-          handleFilter={this.handleFilter}
+          handleFilterOption={this.handleFilterOption}
+          handleSortOption={this.handleSortOption}
           todos={this.state.todos}
         />
       </div>
