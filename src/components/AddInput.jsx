@@ -72,7 +72,7 @@ export default class AddInput extends Component {
     const uneditedTodo = this.state.todos;
     if (todoValue.length !== 0) {
       uneditedTodo.forEach((element) => {
-        if (element.index == index) {
+        if (element.index === index) {
           element.task = todoValue;
         }
       });
@@ -87,7 +87,7 @@ export default class AddInput extends Component {
   checkHandler = (checkValue, index) => {
     let temp = this.state.todos;
     temp.forEach((element) => {
-      if (element.index == index) {
+      if (element.index === index) {
         element.isComplete = checkValue;
       }
     });
@@ -106,31 +106,27 @@ export default class AddInput extends Component {
           return b.due_date - a.due_date;
         case "dueDate":
           return a.due_date - b.due_date;
+        default:
+          return 0;
       }
     });
     let filteredTodos = sortedTodos
-
       .filter((todo) => {
         switch (this.state.filterOption) {
           case "all":
-            return todo;
+            return true;
           case "completed":
-            if (todo.isComplete) {
-              return todo;
-            }
-            break;
+            return todo.isComplete;
           case "active":
-            if (!todo.isComplete) {
-              return todo;
-            }
+            return !todo.isComplete;
           case "due-date":
             let today = new Date();
-            if (
-              today.toLocaleDateString("en-US") ==
+            return (
+              today.toLocaleDateString("en-US") ===
               todo.due_date.toLocaleDateString("en-US")
-            ) {
-              return todo;
-            }
+            );
+          default:
+            return false;
         }
       })
       .map((todo) => {
