@@ -30,7 +30,7 @@ export default class AddInput extends Component {
           task: "Sign up for online course edit test",
           isComplete: false,
           add_date: new Date("2021-05-06"),
-          due_date: new Date("2021-05-16"),
+          due_date: new Date("2021-06-03"),
         },
       ],
     };
@@ -109,6 +109,7 @@ export default class AddInput extends Component {
       }
     });
     let filteredTodos = sortedTodos
+
       .filter((todo) => {
         switch (this.state.filterOption) {
           case "all":
@@ -122,7 +123,14 @@ export default class AddInput extends Component {
             if (!todo.isComplete) {
               return todo;
             }
-            break;
+          case "due-date":
+            let today = new Date();
+            if (
+              today.toLocaleDateString("en-US") ==
+              todo.due_date.toLocaleDateString("en-US")
+            ) {
+              return todo;
+            }
         }
       })
       .map((todo) => {
