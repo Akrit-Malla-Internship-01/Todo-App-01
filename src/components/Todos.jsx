@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { React, Component } from "react";
 import { EditText } from "react-edit-text";
 
 export default class Todos extends Component {
@@ -31,14 +31,18 @@ export default class Todos extends Component {
         </label>
 
         <EditText
+          id={"editText"}
           name={"" + this.props.index + ""}
           onSave={this.handleTextChange}
           defaultValue={this.props.todo.task}
         />
 
         <span className="icons-group">
-          <i className="fas fa-pen icon icon-pen tooltip" onClick={() => {}}>
-            <span className="tooltiptext">Click the text</span>
+          <i
+            className="fas fa-exclamation icon icon-pen tooltip"
+            onClick={this.clickEdit}
+          >
+            <span className="tooltiptext">Click the text to edit</span>
           </i>
           <i
             className="fas fa-trash-alt icon icon-trash tooltip"

@@ -87,7 +87,7 @@ export default class AddInput extends Component {
   checkHandler = (checkValue, index) => {
     let temp = this.state.todos;
     temp.forEach((element) => {
-      if (element.index === index) {
+      if (element.index == index) {
         element.isComplete = checkValue;
       }
     });
